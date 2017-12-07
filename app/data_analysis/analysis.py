@@ -17,7 +17,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
 from textblob import TextBlob
 
-from format_data import core_emotions, all_emotions
+from .format_data import core_emotions, all_emotions
 
 stemmer = PorterStemmer()
 
