@@ -145,7 +145,7 @@ class Driver:
                 try:
                     sentiment_folder = url_for('static', filename='film_sentiment_predictions')
                 except RuntimeError as e:
-                    print(e)
+                    # print(e)
                     sentiment_folder = '../static/film_sentiment_predictions'
 
                 filepath = sentiment_folder + '/' + film_name + '.csv'
