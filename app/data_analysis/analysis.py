@@ -1,5 +1,4 @@
 import os
-from app import app
 import csv
 import math
 import sqlite3
