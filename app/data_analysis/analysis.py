@@ -1,6 +1,6 @@
-import os
 import csv
 import math
+import os
 import sqlite3
 import string
 from collections import Counter
@@ -17,17 +17,11 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
 from textblob import TextBlob
 
-from .format_data import core_emotions, all_emotions
+from format_data import core_emotions, all_emotions
 
 stemmer = PorterStemmer()
 
-try:
-    driver_model_path = url_for('static', filename='models/driver_model.pkl')
-    sentiment_folder = url_for('static', filename='film_sentiment_predictions')
-except RuntimeError as e:
-    print(e)
-    driver_model_path = '../static/models/driver_model.pkl'
-    sentiment_folder = '../static/film_sentiment_predictions'
+from app import app
 
 
 def tokenize(text):
@@ -145,6 +139,12 @@ class Driver:
                 film_id = film_row[0]
                 film_name = film_row[1]
 
+                try:
+                    sentiment_folder = url_for('static', filename='film_sentiment_predictions')
+                except RuntimeError as e:
+                    print(e)
+                    sentiment_folder = '../static/film_sentiment_predictions'
+
                 filepath = sentiment_folder + '/' + film_name + '.csv'
 
                 with open(filepath, 'wb') as csvfile:
@@ -208,20 +208,26 @@ class Driver:
 
 
 def analyze_external_script(script_file, output_file):
-    from os.path import isfile
-    if isfile(driver_model_path):
+    try:
+        driver_model_path = os.path.join(app.root_path, 'static/models/driver_model.pkl')
         model = joblib.load(driver_model_path)
-    else:
-        model = Driver(emotions='core', use_external_sentiment=False).fit()
+    except Exception as e:
+        print(e)
+        driver_model_path = '../static/models/driver_model.pkl'
+        model = joblib.load(driver_model_path)
 
     model.analyze_external_script(script_file, output_file)
 
 
+# pickle must be outside of __main__ to have correct module namespace
+def fit_and_save_model(filepath='../static/models/driver_model.pkl'):
+    model = Driver(emotions='core', use_external_sentiment=False).fit()
+
+    joblib.dump(model, filepath)
+
 if __name__ == '__main__':
-    Driver(emotions='core', use_external_sentiment=False).analyze()
-    # model = Driver(emotions='core', use_external_sentiment=False).fit()
+    # Driver(emotions='core', use_external_sentiment=False).analyze()
+    # fit_and_save_model()
 
-    # joblib.dump(model, driver_model_path)
-
-    # model = joblib.load(driver_model_path)
-    # model.analyze_scripts()
+    model = joblib.load('../static/models/driver_model.pkl')
+    model.analyze_scripts()
