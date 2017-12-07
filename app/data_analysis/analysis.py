@@ -24,7 +24,8 @@ stemmer = PorterStemmer()
 try:
     driver_model_path = url_for('static', filename='models/driver_model.pkl')
     sentiment_folder = url_for('static', filename='film_sentiment_predictions')
-except RuntimeError:
+except RuntimeError as e:
+    print(e)
     driver_model_path = '../static/models/driver_model.pkl'
     sentiment_folder = '../static/film_sentiment_predictions'
 
