@@ -3,7 +3,7 @@ from flask import render_template, request, url_for
 
 from app import app
 
-from data_analysis.analysis import analyze_external_script
+from .data_analysis.analysis import analyze_external_script
 
 
 @app.route('/', methods=['GET', 'POST'])
