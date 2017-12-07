@@ -1,3 +1,5 @@
+import os
+from app import app
 import csv
 import math
 import sqlite3
@@ -37,13 +39,14 @@ def calc_rmse(y_pred, y):
     return math.sqrt(np.sum((y_pred - y) ** 2) / y_pred.size)
 
 
-def get_connection(emotions='all'):
-    filename = emotions + '_emotions.sqlite3'
+def get_connection(emotions='core'):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    filename = os.path.join(dir_path, emotions + '_emotions.sqlite3')
     return sqlite3.connect(filename)
 
 
 class Driver:
-    def __init__(self, emotions='all', use_external_sentiment=False):
+    def __init__(self, emotions='core', use_external_sentiment=False):
         self.emotions = emotions
         self.conn = get_connection(emotions)
         self.data = self.get_data()
@@ -215,10 +218,10 @@ def analyze_external_script(script_file, output_file):
 
 
 if __name__ == '__main__':
-    # Driver(emotions='core', use_external_sentiment=False).analyze()
+    Driver(emotions='core', use_external_sentiment=False).analyze()
     # model = Driver(emotions='core', use_external_sentiment=False).fit()
 
     # joblib.dump(model, driver_model_path)
 
-    model = joblib.load(driver_model_path)
-    model.analyze_scripts()
+    # model = joblib.load(driver_model_path)
+    # model.analyze_scripts()

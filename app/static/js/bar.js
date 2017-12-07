@@ -102,7 +102,7 @@ legend.append("text")
     .text(function(d) { return d; });
 
 
-function readCSV(filename,callback){
+function readCSV(filename, callback){
   d3.csv(filename, function(d, i, columns) {
     for (i = 1, t = 0; i < columns.length; ++i) t += d[columns[i]] = +d[columns[i]];
     //d.total = t;

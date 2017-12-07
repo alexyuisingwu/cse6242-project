@@ -15,12 +15,13 @@
             pointer-events: none;
         }
 
+
     </style>
 </head>
 <div style="text-align:center">
     <h1>Emotional Profiles of Films</h1>
     <div>
-        <select id="opts">
+        <select id="opts" style="display:inline">
             <option value="ds0">Top Grossing Average</option>
             <option value="ds1" selected="selected">Top Grossing - Avatar</option>
             <option value="ds2">Top Grossing - Spiderman</option>
@@ -44,20 +45,46 @@
             <option value="ds20">Poor Performance - Hudson Hawk</option>
             <option value="ds21">Poor Performance - Catwoman</option>
         </select>
+        <h4 style="display:inline; margin:50px">OR</h4>
+        <form method="POST" id="upload-form" style="display:inline" enctype="multipart/form-data">
+            <input type="file" name="script"/>
+            <button type="submit">Upload Script</button>
+        </form>
     </div>
     <br>
     <svg width="960" height="500" style="display:block; margin:auto"></svg>
 </div>
 
-
+<script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
 <script src="//d3js.org/d3.v4.min.js"></script>
 <script src={{url_for("static", filename="js/lib/d3.tip.v0.6.3.js" )}}></script>
 <script>
     var sentimentFolder = '{{url_for('static', filename='film_sentiment_predictions/')}}';
+    var tmpFolder = '{{url_for('static', filename='tmp/')}}';
 
 </script>
 <script src={{url_for("static", filename="js/bar.js" )}}></script>
 <script>
-    makeGraph(["../film_sentiment_predictions/Amour.csv"], 'testing title');
+    $("#upload-form").submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: window.location.pathname,
+            type: 'POST',
+            data: formData,
+            success: function (data) {
+                var title = data.replace(/^.*[\\\/]/, '').split('.')[0];
+                makeGraph([data], title);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+    //makeGraph(["../tmp/Amour.csv"], 'testing title');
 
 </script>
