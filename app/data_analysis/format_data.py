@@ -135,20 +135,20 @@ class AffectiveData(Data):
 
     def load(self):
 
-        self._load_xml('../labeled_data/AffectiveText.Semeval.2007/AffectiveText.trial/affectivetext_trial.xml')
-        self._load_xml('../labeled_data/AffectiveText.Semeval.2007/AffectiveText.test/affectivetext_test.xml')
+        self._load_xml('../../labeled_data/AffectiveText.Semeval.2007/AffectiveText.trial/affectivetext_trial.xml')
+        self._load_xml('../../labeled_data/AffectiveText.Semeval.2007/AffectiveText.test/affectivetext_test.xml')
 
         self._load_emotions(
-            '../labeled_data/AffectiveText.Semeval.2007/AffectiveText.trial/affectivetext_trial.emotions.gold')
+            '../../labeled_data/AffectiveText.Semeval.2007/AffectiveText.trial/affectivetext_trial.emotions.gold')
         self._load_emotions(
-            '../labeled_data/AffectiveText.Semeval.2007/AffectiveText.test/affectivetext_test.emotions.gold')
+            '../../labeled_data/AffectiveText.Semeval.2007/AffectiveText.test/affectivetext_test.emotions.gold')
 
 
 # storybook sentences
 # emotions = core_emotions with some minor conversion (see emotion_dict)
 class PotterData(Data):
-    detailed_data_directory = '../labeled_data/Potter/emmood'
-    consolidated_data_directory = '../labeled_data/Potter/agree-sent'
+    detailed_data_directory = '../../labeled_data/Potter/emmood'
+    consolidated_data_directory = '../../labeled_data/Potter/agree-sent'
 
     emotion_dict = {
         'A': 1,
@@ -240,7 +240,7 @@ class PlutchikData(Data):
             self.sentence_data[sentence][1] += 2
 
         # NOTE: sentences not necessarily read in order and no identifier provided is unique per sentence, so sentence_id dict mapping sentences to emotions needed
-        with open('../labeled_data/CrowdFlower/plutchik-wheel-full-DFE.csv', 'rU') as f:
+        with open('../../labeled_data/CrowdFlower/plutchik-wheel-full-DFE.csv', 'rU') as f:
             reader = csv.reader(f)
             headers = reader.next()
             for row in reader:
@@ -274,7 +274,7 @@ class PlutchikData(Data):
             self.sentence_data[sentence][1] += 1
 
         # NOTE: sentences not necessarily read in order and no identifier provided is unique per sentence, so sentence_id dict mapping sentences to emotions needed
-        with open('../labeled_data/CrowdFlower/plutchik-wheel-full-DFE.csv', 'rU') as f:
+        with open('../../labeled_data/CrowdFlower/plutchik-wheel-full-DFE.csv', 'rU') as f:
             reader = csv.reader(f)
             headers = reader.next()
             for row in reader:
@@ -341,7 +341,7 @@ class TweetData(Data):
         return output_sentence[:-1]
 
     def _load_helper(self):
-        with open('../labeled_data/CrowdFlower/text_emotion.csv', 'rU') as f:
+        with open('../../labeled_data/CrowdFlower/text_emotion.csv', 'rU') as f:
             with self.conn:
                 reader = csv.reader(f)
                 header = reader.next()
